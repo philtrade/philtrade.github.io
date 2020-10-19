@@ -8,7 +8,7 @@ main:
   - title: "About"
     url: /about/
 
-sidebar_nav:
+sbnav:
   - title: "Photography"
     children:
       - title: "Street Photography"
