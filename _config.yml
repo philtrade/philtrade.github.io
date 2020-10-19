@@ -73,6 +73,10 @@ footer:
       icon: "fab fa-fw fa-github"
       url: "https://github.com/philtrade/"
 
+# Try adding sidebar to top level
+sidebar:
+  nav: "sbnav"
+  
 defaults:
   # _posts
   - scope:
