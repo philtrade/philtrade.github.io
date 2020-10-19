@@ -86,7 +86,7 @@ defaults:
       share: true
       related: true
       sidebar:
-        nav: "sidebar_nav"
+        nav: "sbnav"
   # _pages
   - scope:
       path: "_pages"
@@ -94,6 +94,8 @@ defaults:
     values:
       layout: single
       author_profile: false
+      sidebar:
+        nav: "sbnav"
 
 category_archive:
   type: liquid
