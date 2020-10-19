@@ -1,9 +1,17 @@
 main:
   - title: "Photography"
     url: /photography/
-  - title: "Categories"
-    url: /categories/
+  - title: "Blog"
+    url: /blog/
   - title: "Tags"
     url: /tags/
+  - title: "About"
+    url: /about/
+
+sidebar_nav:
+  - title: "Photography"
+    children:
+      - title: "Street Photography"
+        url: /photography/StreetPhotog.html
   - title: "About"
     url: /about/
