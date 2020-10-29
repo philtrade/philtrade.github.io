@@ -20,4 +20,4 @@ A couple of workarounds which allows generating a 4096 bit `dh.pem` bearable:
 
 The original instruction does not allow WAN access from behind the VPN. It can be solved by an iptables `SNAT` rule, e.g. [`iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -j SNAT --to-source <router ip>`](http://dani.foroselectronica.es/openvpn-openwrt-secure-browsing-from-your-mobile-phone-283/)
 
-3. I opted to generate separate firewall rules file and server instance config, then "include" them using `uci`.  The advantage is those can be easily tweaked/modified by editing the files with text editor without dealing with many lines of `uci` commands.  The disadvantage is that, this level of indirection means `uci show` or `luci` the web interface will not show the details.
+I opted for generating separate firewall rules file and server instance config, then "include" them using `uci`.  The advantage is those can be easily tweaked/modified by editing the files with text editor, and that it avoids polluting the main `/etc/config/{firewall.user,openvpn}` files.  The disadvantage is that `uci show` or `luci` the web interface will not show the details.
