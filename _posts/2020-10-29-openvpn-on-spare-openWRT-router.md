@@ -4,7 +4,7 @@ Got a spare router?  `openWRT` can turn it into a swiss army knife for home netw
 
 Previously, on a spare router flashed with `openWRT`, I implemented a wake-over-WAN mechanism.  It saved me lot of time in remotely waking up a home GPU dev box than spinning up a commercial cloud instance.
 
-Lately I was asked about private/non-commercial VPN solution to masquerade outbound traffic.  I followed, tweaked, and consolidated the instructions from multiple sources into a single reusable script ([the gist is here](https://gist.github.com/philtrade/88bf4168b33b35b04667c5d56bfbfd10)).
+Lately I was asked about private/non-commercial VPN solution to masquerade outbound traffic.  I followed, tweaked, and consolidated the instructions from multiple sources to get `openvpn` server running on the inquirer's spare router. I further consolidated the steps [into a single script](https://gist.github.com/philtrade/88bf4168b33b35b04667c5d56bfbfd10).
 
 The exercise helped me understand some practical tradeoffs in crypto key generation and management, and configuring network services using `uci` vs direct commands.
 
@@ -20,4 +20,4 @@ A couple of workarounds which allows generating a 4096 bit `dh.pem` bearable:
 
 The original instruction does not allow WAN access from behind the VPN. It can be solved by an iptables `SNAT` rule, e.g. [`iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -j SNAT --to-source <router ip>`](http://dani.foroselectronica.es/openvpn-openwrt-secure-browsing-from-your-mobile-phone-283/)
 
-I opted for generating separate firewall rules file and server instance config, then "include" them using `uci`.  The advantage is those can be easily tweaked/modified by editing the files with text editor, and that it avoids polluting the main `/etc/config/{firewall.user,openvpn}` files.  The disadvantage is that `uci show` or `luci` the web interface will not show the details.
+I opted for generating separate firewall rules file and server instance config, then "include" them using `uci`.  The advantage is those can be easily tweaked/modified by editing the files with text editor, and that it avoids polluting the main `/etc/config/{firewall.user,openvpn}` files.  The disadvantage is that `uci show` or `luci` the web interface cannot follow the `include` indirection, thus will not show the details.
