@@ -9,7 +9,7 @@ Lately I was asked about private/non-commercial VPN solution to masquerade outbo
 The exercise helped me understand some practical tradeoffs in crypto key generation and management, and configuring network services using `uci` vs direct commands.
 
 
-### — Technicalities for the record —
+### — Technicalities —
 
 The original instruction by [`openWRT` VPN server wiki page](https://openwrt.org/docs/guide-user/services/vpn/openvpn/server) has a major bottleneck in generating a 2048-bit Diffie-Hellman parameter file (aka`dh.pem`): it can take 45 minutes to hours on the router.  On an Intel E5 xeon it would only take 25 seconds.
 
