@@ -12,7 +12,7 @@ The exercise helped me understand some practical tradeoffs in crypto key generat
 ### — Technicalities —
 
 #### Make sure you can connect to the spare router after flashing `openWRT`
-By default, burning a new `openWRT` image would disable the router's wifi, and the only way to configure `luci` is via the LAN interface/port, and browse to`192.168.1.1`.  If you are using a laptop, make sure you have the right adaptor for LAN cable.
+By default, the new `openWRT` image would disable the router's wifi, and is only accessible via the LAN interface/port as `192.168.1.1`.  If you are using a laptop to configure, make sure it can take a LAN cable.  I didn't have the cable adaptor, and had to connect via another wifi router configured as a DHCP client of the target spare router.
 
 #### Speeding up `dh.pem` creation
 The original instruction by [`openWRT` VPN server wiki page](https://openwrt.org/docs/guide-user/services/vpn/openvpn/server) has a major bottleneck: generating a 2048-bit Diffie-Hellman parameter file (aka`dh.pem`) can take 45 minutes to hours on the router (an Intel E5 xeon only takes 25 seconds.)  Two workarounds:
