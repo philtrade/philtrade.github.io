@@ -22,7 +22,7 @@ The original instruction by [`openWRT` VPN server wiki page](https://openwrt.org
 2. Generate the `dh.pem` elsewhere on a faster machine, and supply it to [the VPN setup script](https://gist.github.com/philtrade/88bf4168b33b35b04667c5d56bfbfd10).
 
 #### Routing and Firewall Rules, and VPN config file
-Opening of WAN port for incoming VPN is done by `uci` commands.  Traffic routing and openvpn parameters are stored in files in `/etc/openvpn/{firewall,server}*`.  The downside is that `uci show`/`luci` cannot display the details for you, they only show the included file names.
+Opening of WAN port for incoming VPN is done by `uci` commands.  Traffic routing and openvpn parameters are stored in files in `/etc/openvpn/{firewall,server}*`.  The downside is that `uci show` or `luci` only shows the included file names, not their contents.
 
 Routing outbound traffic through the upstream WAN interace is done by a `iptables` `SNAT` rule in `/etc/openvpn/firewall.ovpn_<port>`, e.g. `iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -j SNAT --to-source <router ip>`, [as explained here](http://dani.foroselectronica.es/openvpn-openwrt-secure-browsing-from-your-mobile-phone-283/)
 
