@@ -11,13 +11,18 @@ The exercise helped me understand some practical tradeoffs in crypto key generat
 
 ### — Technicalities —
 
-The original instruction by [`openWRT` VPN server wiki page](https://openwrt.org/docs/guide-user/services/vpn/openvpn/server) has a major bottleneck in generating a 2048-bit Diffie-Hellman parameter file (aka`dh.pem`): it can take 45 minutes to hours on the router.  On an Intel E5 xeon it would only take 25 seconds.
+#### Make sure you can connect to the spare router after flashing `openWRT`
+By default, burning a new `openWRT` image would disable the router's wifi, and the only way to configure `luci` is via the LAN interface/port, and browse to`192.168.1.1`.  If you are using a laptop, make sure you have the right adaptor for LAN cable.
 
-A couple of workarounds which allows generating a 4096 bit `dh.pem` bearable:
+#### Speeding up `dh.pem` creation
+The original instruction by [`openWRT` VPN server wiki page](https://openwrt.org/docs/guide-user/services/vpn/openvpn/server) has a major bottleneck: generating a 2048-bit Diffie-Hellman parameter file (aka`dh.pem`) can take 45 minutes to hours on the router (an Intel E5 xeon only takes 25 seconds.)  Two workarounds:
 
-1. By calling [‘`openssl dhparam`’ with ‘`-dsaparam`’ option](https://security.stackexchange.com/questions/95178/diffie-hellman-parameters-still-calculating-after-24-hours).  Generating a 4096-bit `dh.pem` now only takes a 2-3 minutes on the router, and only 5 seconds on the Intel E5 Xeon (10 seconds for 8192-bit).
-2. Let user provide a dh.pem, which can be generated elsewhere, and supply it to the VPN setup script.
+1. By calling [‘`openssl dhparam`’ with ‘`-dsaparam`’ option](https://security.stackexchange.com/questions/95178/diffie-hellman-parameters-still-calculating-after-24-hours).  Generating a twice as long, 4096-bit `dh.pem` now only takes a 2-3 minutes on the router, and only 5 seconds on the Intel E5 Xeon.
 
-The original instruction does not allow WAN access from behind the VPN. It can be solved by an iptables `SNAT` rule, e.g. [`iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -j SNAT --to-source <router ip>`](http://dani.foroselectronica.es/openvpn-openwrt-secure-browsing-from-your-mobile-phone-283/)
+2. Generate the `dh.pem` elsewhere on a faster machine, and supply it to [the VPN setup script](https://gist.github.com/philtrade/88bf4168b33b35b04667c5d56bfbfd10).
 
-I opted for generating separate firewall rules file and server instance config, then "include" them using `uci`.  The advantage is those can be easily tweaked/modified by editing the files with text editor, and that it avoids polluting the main `/etc/config/{firewall.user,openvpn}` files.  The disadvantage is that `uci show` or `luci` the web interface cannot follow the `include` indirection, thus will not show the details.
+#### Routing and Firewall Rules, and VPN config file
+Opening of WAN port for incoming VPN is done by `uci` commands.  Traffic routing and openvpn parameters are stored in files in `/etc/openvpn/{firewall,server}*`.  The downside is that `uci show`/`luci` cannot display the details for you, they only show the included file names.
+
+Routing outbound traffic through the upstream WAN interace is done by a `iptables` `SNAT` rule in `/etc/openvpn/firewall.ovpn_<port>`, e.g. `iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -j SNAT --to-source <router ip>`, [as explained here](http://dani.foroselectronica.es/openvpn-openwrt-secure-browsing-from-your-mobile-phone-283/)
+
